@@ -1,75 +1,75 @@
 # 📸 DOM Change Screenshot Capture
 
-Eine Chrome Extension, die automatisch Screenshots bei sichtbaren DOM-Änderungen erstellt.
+A Chrome Extension that automatically creates screenshots when visible DOM changes occur.
 
-## 🎯 Ziel
+## 🎯 Goal
 
-Bei **sichtbaren Änderungen** im **aktiven Tab** automatisch:
+For **visible changes** in the **active tab**, automatically:
 
-1. **Screenshot** als **PNG**
-2. **Metadaten** als **JSON**
-   Beide Dateien teilen sich denselben **UUID4-Basenamen** (z. B. `b7b6f3d2-… .png` / `.json`)
-   und werden **direkt in einen vom Nutzer gewählten Ordner** geschrieben.
+1. **Screenshot** as **PNG**
+2. **Metadata** as **JSON**
+   Both files share the same **UUID4 basename** (e.g. `b7b6f3d2-… .png` / `.json`)
+   and are written **directly to a user-selected folder**.
 
-## 📁 Projektstruktur
+## 📁 Project Structure
 
 ```
 facebook_screenshots/
-├── src/                    # Chrome Extension Dateien
+├── src/                    # Chrome Extension files
 │   ├── manifest.json      # Extension Manifest
 │   ├── popup.html         # Popup Interface
-│   ├── popup.js           # Popup Logik
-│   ├── options.html       # Einstellungsseite
-│   ├── options.js         # Einstellungslogik
+│   ├── popup.js           # Popup Logic
+│   ├── options.html       # Settings page
+│   ├── options.js         # Settings logic
 │   ├── background.js      # Service Worker
 │   └── content.js         # Content Script
-├── README.md              # Diese Datei
-├── INSTALLATION.md        # Installationsanleitung
-├── package.json           # Projekt-Konfiguration
+├── README.md              # This file
+├── INSTALLATION.md        # Installation guide
+├── package.json           # Project configuration
 └── .gitignore             # Git Ignore
 ```
 
 ---
 
-## Rahmen
+## Framework
 
 - Browser: **Google Chrome**, Manifest **V3**
-- Geltung: **nur aktiver Tab**
-- Speicher: **kein Backend, keine DB** – nur **Dateien** im gewählten Ordner
-- Auslöser: sichtbare DOM-Änderung (Scroll/Resize/Mutation) mit Debounce
+- Scope: **active tab only**
+- Storage: **no backend, no DB** – only **files** in the chosen folder
+- Trigger: visible DOM change (Scroll/Resize/Mutation) with debounce
 
 ---
 
-## Ordnerwahl & Schreiben (wichtig)
+## Folder Selection & Writing (important)
 
-### Vorgehen A (empfohlen, ohne Save-As-Dialoge)
+### Approach A (recommended, without Save-As dialogs)
 
-- In der **Options-Seite**: Button **„Zielordner wählen“**.
-- Per **File System Access API**: `showDirectoryPicker()`.
-- Ergebnis: `FileSystemDirectoryHandle` dauerhaft speichern (IndexedDB/`chrome.storage`) und
-  **Schreibberechtigung** via `requestPermission({ mode: "readwrite" })` einholen.
-- Beim Capture: über den Handle `createWritable()` → **PNG/JSON direkt im Ordner anlegen** (keine Prompts).
+- In the **Options page**: Button **"Choose target folder"**.
+- Via **File System Access API**: `showDirectoryPicker()`.
+- Result: permanently store `FileSystemDirectoryHandle` (IndexedDB/`chrome.storage`) and
+  obtain **write permission** via `requestPermission({ mode: "readwrite" })`.
+- During capture: via the handle `createWritable()` → **create PNG/JSON directly in folder** (no prompts).
 
-> Hinweis: Der Nutzer muss diesen Ordner **einmalig** wählen/autorieren.
+> Note: The user must choose/authorize this folder **once**.
 
-### Fallback B (wenn A nicht möglich)
+### Fallback B (if A is not possible)
 
-- `chrome.downloads.download()` mit `filename: "<unterordner>/<uuid>.png"`/`.json` im Chrome-Download-Ordner.
-- Setze `saveAs: false` (keine Dialoge). Unterordner relativ zum Standard-Download-Verzeichnis.
-
----
-
-## Dateinamen & Formate
-
-- **UUID v4** pro Capture, z. B. `b7b6f3d2-7b30-4d7e-9f0b-2f9e0a1f4a11`
-- Dateien:
-  - `b7b6f3d2-….png` (Viewport-Screenshot)
-  - `b7b6f3d2-….json` (Metadaten)
-- PNG (verlustfrei); JSON UTF-8.
+- `chrome.downloads.download()` with `filename: "<subfolder>/<uuid>.png"`/`.json` in Chrome download folder.
+- Set `saveAs: false` (no dialogs). Subfolder relative to standard download directory.
 
 ---
 
-## JSON-Inhalt
+## Filenames & Formats
+
+- **UUID v4** per capture, e.g. `b7b6f3d2-7b30-4d7e-9f0b-2f9e0a1f4a11`
+- Files:
+  - `b7b6f3d2-….png` (Viewport screenshot)
+  - `b7b6f3d2-….json` (Metadata)
+- PNG (lossless); JSON UTF-8.
+
+---
+
+## JSON Content
 
 ```json
 {
@@ -79,30 +79,30 @@ facebook_screenshots/
   "viewport": { "width": 1366, "height": 768, "devicePixelRatio": 2 },
   "scroll": { "x": 0, "y": 1240 },
   "image_filename": "UUID4.png",
-  "text_visible": "… kompletter sichtbarer Text …",
-  "html_visible": "<!-- vollständiges HTML-Fragment aller aktuell sichtbaren Elemente, ohne <script> -->"
+  "text_visible": "… complete visible text …",
+  "html_visible": "<!-- complete HTML fragment of all currently visible elements, without <script> -->"
 }
 ```
 
-## Definitionen
+## Definitions
 
-- text_visible: zusammengefasster sichtbarer Text im Viewport (in Anzeige-Reihenfolge).
-- html_visible: kompletter sichtbarer Page-Content als HTML-Fragment (alle sichtbaren Elemente, Skripte entfernt).
+- text_visible: consolidated visible text in viewport (in display order).
+- html_visible: complete visible page content as HTML fragment (all visible elements, scripts removed).
 
-## Erkennungslogik (sichtbare Änderung)
+## Detection Logic (visible change)
 
 - Events: scroll, resize, MutationObserver (attributes, childList, characterData)
-- Sichtbarkeit: Nur Elemente berücksichtigen, deren getClientRects() den Viewport schneiden und nicht:
+- Visibility: Only consider elements whose getClientRects() intersect the viewport and are not:
 - display: none, visibility: hidden, opacity: 0
-- Debounce / Rate-Limit: DEBOUNCE_MS = 500 ms, max. 1 Capture/Sekunde
+- Debounce / Rate-Limit: DEBOUNCE_MS = 500 ms, max. 1 capture/second
 
-## Ablauf (High Level) 1. Start im Popup („Start Capture“) 2. Content Script aktiviert Observer & (optional) leichte Scroll-Dämpfung 3. Bei sichtbarer Änderung (und Debounce erfüllt):
+## Process (High Level) 1. Start in popup ("Start Capture") 2. Content Script activates observer & (optional) light scroll damping 3. On visible change (and debounce fulfilled):
 
-- Hintergrund: chrome.tabs.captureVisibleTab({format:"png"}) → PNG
-- Content Script: text_visible + html_visible extrahieren
-- UUID4 generieren; PNG + JSON unter diesem Namen in gewähltem Ordner speichern 4. Stop im Popup („Stop Capture“) → Listener/Observer aus
+- Background: chrome.tabs.captureVisibleTab({format:"png"}) → PNG
+- Content Script: extract text_visible + html_visible
+- Generate UUID4; save PNG + JSON under this name in chosen folder 4. Stop in popup ("Stop Capture") → remove listeners/observers
 
-## Berechtigungen (Manifest-Auszug)
+## Permissions (Manifest excerpt)
 
 ```json
 {
@@ -114,10 +114,10 @@ facebook_screenshots/
 }
 ```
 
-File System Access API erfordert einen User-Klick in options.html (Button „Ordner wählen“).
+File System Access API requires a user click in options.html (Button "Choose folder").
 
-## Erfolgskriterien
+## Success Criteria
 
-- Jedes Capture erzeugt zwei Dateien im Zielordner: UUID4.png & UUID4.json
-- JSON enthält UTC-Zeit, URL, sichtbaren Text und sichtbares HTML-Fragment
-- Läuft ohne Dialoge nach einmaliger Ordnerfreigabe
+- Each capture creates two files in target folder: UUID4.png & UUID4.json
+- JSON contains UTC time, URL, visible text and visible HTML fragment
+- Runs without dialogs after one-time folder authorization
