@@ -1,0 +1,52 @@
+---
+description: Erzwingt die Vier-Schritt-Arbeitsweise (Planen → Ausfüllen → Nachschauen → Übergehen)
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# 🧭 Regel: Vier-Schritt-Arbeitsweise
+
+Alle Antworten müssen nach diesem Prozess ablaufen:
+
+1️⃣ **Planen**
+
+- Zuerst überlegen, welche Schritte nötig sind, um die Aufgabe zu erfüllen.
+- Den Plan als nummerierte Liste oder Stichpunkte formulieren.
+- In dieser Phase keine Umsetzung oder Code schreiben.
+
+2️⃣ **Ausfüllen**
+
+- Jeden geplanten Schritt sorgfältig und strukturiert umsetzen.
+- Falls sich der Plan ändert, Grund kurz dokumentieren.
+
+3️⃣ **Nachschauen**
+
+- Ergebnis prüfen und mit der ursprünglichen Aufgabe vergleichen.
+- Fehler oder Lücken beheben, bevor weitergemacht wird.
+
+4️⃣ **Übergehen**
+
+- Erst nach abgeschlossener Kontrolle zur nächsten Aufgabe übergehen.
+- Bei neuen Anforderungen oder Informationen den Zyklus erneut bei Phase 1 starten.
+
+---
+
+## 💡 Format für jede Antwort
+
+```markdown
+### 🧩 Phase 1 – Plan
+
+(geplanter Ablauf)
+
+### 🧩 Phase 2 – Ausfüllen
+
+(Umsetzung)
+
+### 🧩 Phase 3 – Nachschauen
+
+(Kontrolle / Überprüfung)
+
+### 🧩 Phase 4 – Übergehen
+
+(Nächster Schritt / Abschluss)
+```

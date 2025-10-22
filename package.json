@@ -1,0 +1,32 @@
+{
+  "name": "CYBERHELD Screenshot Capture",
+  "version": "1.0.0",
+  "description": "Chrome Extension für automatische Screenshots bei sichtbaren DOM-Änderungen",
+  "main": "src/manifest.json",
+  "scripts": {
+    "build": "echo 'Extension ist bereit zur Verwendung'",
+    "package": "zip -r extension.zip src/",
+    "clean": "rm -f extension.zip",
+    "create-extension": "npm run clean && npm run package && echo '✅ Extension erstellt: extension.zip'",
+    "install-chrome": "echo '📦 Öffne chrome://extensions/ und lade den src/ Ordner'",
+    "dev": "echo '🛠️ Extension läuft im Entwicklungsmodus - lade src/ in Chrome'",
+    "setup": "./scripts/setup.sh",
+    "install": "./scripts/install.sh",
+    "quick-start": "npm run setup && npm run install"
+  },
+  "keywords": [
+    "chrome-extension",
+    "screenshot",
+    "dom-monitoring",
+    "automation"
+  ],
+  "author": "Pascal",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

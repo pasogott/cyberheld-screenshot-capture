@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "DOM Change Screenshot Capture",
+  "version": "1.0.0",
+  "description": "Automatische Screenshots bei sichtbaren DOM-Änderungen",
+
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "downloads",
+    "tabs",
+    "management"
+  ],
+
+  "host_permissions": ["<all_urls>"],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Screenshot Capture"
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "options_page": "options.html",
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

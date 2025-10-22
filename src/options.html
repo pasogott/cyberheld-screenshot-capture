@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einstellungen - Screenshot Capture</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .directory-section {
+            border: 2px dashed #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .directory-section.has-directory {
+            border-color: #4CAF50;
+            background-color: #f8fff8;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .select-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .select-btn:hover {
+            background-color: #1976D2;
+        }
+
+        .clear-btn {
+            background-color: #f44336;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .clear-btn:hover {
+            background-color: #da190b;
+        }
+
+        .directory-info {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .directory-path {
+            font-weight: 500;
+            color: #333;
+            word-break: break-all;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background-color: #e8f5e8;
+            color: #2d5a2d;
+        }
+
+        .status.error {
+            background-color: #ffeaea;
+            color: #d32f2f;
+        }
+
+        .info {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .info h3 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+
+        .info ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .info li {
+            margin: 5px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚙️ Screenshot Capture Einstellungen</h1>
+
+        <div class="section">
+            <h2>📁 Zielordner</h2>
+            <div id="directorySection" class="directory-section">
+                <p>Wähle den Ordner aus, in dem Screenshots und Metadaten gespeichert werden sollen.</p>
+                <button id="selectDirectoryBtn" class="select-btn">
+                    📁 Ordner wählen
+                </button>
+                <div id="directoryInfo" class="directory-info" style="display: none;">
+                    <div class="directory-path" id="directoryPath"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="status" class="status" style="display: none;"></div>
+
+        <div class="info">
+            <h3>ℹ️ Informationen</h3>
+            <ul>
+                <li>Die Extension erstellt automatisch Screenshots bei sichtbaren DOM-Änderungen</li>
+                <li>Jeder Screenshot wird als PNG-Datei gespeichert</li>
+                <li>Zusätzlich wird eine JSON-Datei mit Metadaten erstellt</li>
+                <li>Dateien erhalten eindeutige UUID4-Namen</li>
+                <li>Der gewählte Ordner wird dauerhaft gespeichert</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>
