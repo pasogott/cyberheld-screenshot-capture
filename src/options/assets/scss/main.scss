@@ -1,0 +1,136 @@
+// Import custom variables
+@import 'variables';
+
+// Import Bootstrap
+@import 'bootstrap/scss/bootstrap';
+// @use 'bootstrap/scss/bootstrap' as *;
+
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
+// Global styles
+body {
+  --bs-body-font-size: 0.8rem;
+  // font-family: $font-family-base;
+  background-color: $gray-100;
+  color: $gray-800;
+}
+
+// Dashboard layout
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacer;
+}
+
+// Card styles with subtle shadows and rounded corners
+.card {
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-sm;
+  border: 1px solid $gray-200;
+  transition: $transition-base;
+
+  &:hover {
+    box-shadow: $box-shadow;
+  }
+}
+
+// Button styles with gradients
+.btn-primary {
+  background: $primary-gradient;
+  border: none;
+
+  &:hover {
+    background: linear-gradient(135deg, $primary, $primary-dark);
+  }
+}
+
+.btn-secondary {
+  background: $secondary-gradient;
+  border: none;
+
+  &:hover {
+    background: linear-gradient(135deg, $secondary, $secondary-dark);
+  }
+}
+
+// Input styles
+.form-control {
+  border-radius: $border-radius;
+  border: 1px solid $gray-300;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+    border-color: $primary-light;
+  }
+}
+
+// Table styles
+.table {
+  th {
+    background-color: rgba($primary, 0.1);
+    color: $gray-700;
+    font-weight: $font-weight-medium;
+  }
+
+  tbody tr {
+    transition: $transition-base;
+
+    &:hover {
+      background-color: rgba($primary, 0.05);
+    }
+  }
+}
+
+// Modal styles
+.modal-content {
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-lg;
+  border: none;
+}
+
+// Custom checkbox
+.custom-checkbox {
+  .custom-control-input:checked~.custom-control-label::before {
+    background-color: $primary;
+    border-color: $primary;
+  }
+}
+
+// Utilities
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.transition-all {
+  transition: $transition-base;
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: rgba($secondary, 0.3);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+.highlight {
+  animation: highlight 1s ease-out;
+}
